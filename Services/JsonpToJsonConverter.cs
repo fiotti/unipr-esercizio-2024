@@ -17,56 +17,23 @@ class JsonpToJsonConverter : IJsonpToJsonConverter
         //               start                   end
         // target: { "Hello": "(World)" }
 
-        BufferedStream bufferedSource = new(source);
-        BufferedStream bufferedTarget = new(target);
+        List<byte> bytes = new();
 
-        // Salta tutti i caratteri fino alla prima '('.
-        while (bufferedSource.ReadByte() is not ('(' or -1))
+        Span<byte> buff = stackalloc byte[4096];
+        int bytesRead;
+        while ((bytesRead = source.Read(buff)) > 0)
         {
-            // Skip.
+            for (int i = 0; i < bytesRead; i++)
+                bytes.Add(buff[i]);
         }
 
-        // Copia tutti i caratteri diversi da ')'.
-        int b;
-        while ((b = bufferedSource.ReadByte()) is not (')' or -1))
-        {
-            bufferedTarget.WriteByte((byte)b);
-        }
+        int leftParenIndex = bytes.IndexOf((byte)'(');
+        int rightParenIndex = bytes.LastIndexOf((byte)')');
 
-        Span<byte> buff = stackalloc byte[RightParenLookahead];
-        while (true)
-        {
-            // Ha trovato una ')', legge fino a `RightParenLookahead` caratteri,
-            // verificando che siano tutti caratteri di spaziatura o ';'.
-            int buffIndex = 0;
+        if (leftParenIndex == -1 || rightParenIndex == -1)
+            throw new FormatException("Lo stream non contiene dati in formato JSONP.");
 
-            while (buffIndex < buff.Length && (b = bufferedSource.ReadByte()) != -1)
-            {
-                buff[buffIndex++] = (byte)b;
-
-                if (b != ';' && !char.IsWhiteSpace((char)b))
-                    break;
-            }
-
-            // Se ha raggiunto la fine dello stream, fine.
-            if (b == -1)
-                break;
-
-            // Se ha trovato almeno un carattere non di spaziatura o ';',
-            // travasa tutto ciò che ha nel buffer e procede.
-            if (buffIndex < RightParenLookahead)
-            {
-                bufferedTarget.WriteByte((byte)')');
-                bufferedTarget.Write(buff[..buffIndex]);
-            }
-
-            // Se non ha trovato altri caratteri, fine.
-            else
-            {
-                break;
-            }
-        }
-
-        bufferedTarget.Flush();
+        for (int i = leftParenIndex + 1; i < rightParenIndex; i++)
+            target.WriteByte(bytes[i]);
     }
 }

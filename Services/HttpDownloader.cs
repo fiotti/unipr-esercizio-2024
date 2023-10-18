@@ -11,6 +11,6 @@ class HttpDownloader : IHttpDownloader
         HttpResponseMessage response = await client.GetAsync(requestUri, cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        await response.Content.CopyToAsync(target);
+        await response.Content.CopyToAsync(target, cancellationToken);
     }
 }

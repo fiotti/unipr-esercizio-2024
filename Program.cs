@@ -61,12 +61,12 @@ class Executor
         BirthStats stats;
         using (FileStream json = File.OpenRead(JsonFile))
         {
-            stats = JsonSerializer.Deserialize<BirthStats>(json) ?? throw new InvalidOperationException();
+            stats = JsonSerializer.Deserialize<BirthStats>(json) ?? throw new FormatException("null JSON.");
         }
 
         IEnumerable<GenderBirthStats> statsOrdered = stats.Male
             .Concat(stats.Female)
-            .OrderByDescending(s => s.Count);
+            .OrderBy(s => s.Name);
 
         foreach (GenderBirthStats s in statsOrdered)
         {
