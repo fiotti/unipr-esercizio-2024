@@ -2,7 +2,7 @@ Esercizio C#
 ============
 
 Scrivere un'applicazione a console in C# che reperisca dal sito dell'ISTAT
-la lista dei nomi di bambini registrati all'ufficio anagrafe nell'anno 2021.
+la lista dei nomi di bambini registrati all'ufficio anagrafe nell'anno 2022.
 
 Il programma deve stampare i nomi ordinati in ordine alfabetico, stampando per
 ciascun nome il genere ed il numero di bambini registrati con quel nome.
@@ -14,11 +14,11 @@ Usare `async` ed `await` dove necessario, usare Linq dove necessario.
 
 Scrivere un programma da linea di comando in C# che reperisca dal sito
 dell'ISTAT la lista dei nomi di bambini registrati all'ufficio anagrafe
-nell'anno 2021.
+nell'anno 2022.
 
-https://www.istat.it/ws/nati/index2021.php?type=list&limit=137&year=2021
+https://www.istat.it/wp-content/themes/EGPbs5-child/contanomi/nati/index2022.php?type=list&limit=200&year=2022
 
-Salvare il risultato su un file _nascite2021.js_.
+Salvare il risultato su un file _nascite2022.js_.
 
 Se il file è già presente in quanto è già stato scaricato e salvato in
 precedenza, il programma non deve scaricarlo nuovamente ad ogni esecuzione.
@@ -31,16 +31,16 @@ Il file è in formato [JSONP](https://wikipedia.org/wiki/JSONP) equivalente al
 seguente (esclusi ritorni a capo e spaziature):
 ```js
 callback({
-  "years": [2021],
+  "years": [2022],
   "0": [
-    { "year": "2021", "name": "LEONARDO", "count": "8448", "gender": "m", "percent": "4.1237113402062" },
-    { "year": "2021", "name": "ALESSANDRO", "count": "4975", "gender": "m", "percent": "2.4284403311465" },
-    { "year": "2021", "name": "TOMMASO", "count": "4973", "gender": "m", "percent": "2.427464073727" }
+    { "year": 2022, "name": "LEONARDO", "count": 7888, "gender": "m", "percent": 3.8960782376766 },
+    { "year": 2022, "name": "FRANCESCO", "count": 4823, "gender": "m", "percent": 2.3821989528796 },
+    { "year": 2022, "name": "TOMMASO", "count": 4795, "gender": "m", "percent": 2.3683690605552 }
   ],
   "1": [
-    { "year": "2021", "name": "SOFIA", "count": "5578", "gender": "f", "percent": "2.8642583891756" },
-    { "year": "2021", "name": "AURORA", "count": "4991", "gender": "f", "percent": "2.5628385837891" },
-    { "year": "2021", "name": "GIULIA", "count": "4616", "gender": "f", "percent": "2.3702790829033" }
+    { "year": 2022, "name": "SOFIA", "count": 5465, "gender": "f", "percent": 2.8746212758795 },
+    { "year": 2022, "name": "AURORA", "count": 4900, "gender": "f", "percent": 2.5774280424171 },
+    { "year": 2022, "name": "GIULIA", "count": 4198, "gender": "f", "percent": 2.2081720249116 }
   ]
 });
 ```
@@ -49,7 +49,7 @@ callback({
 ## Formato JSON
 
 Convertire la risposta in un file JSON e salvare il risultato su un file
-_nascite2021.json_.
+_nascite2022.json_.
 
 Se il file è già presente in quanto è già stato processato e salvato in
 precedenza, il programma non deve generarlo nuovamente ad ogni esecuzione.
@@ -60,16 +60,16 @@ prima `(`, e la parte finale dall'ultima `)` in poi.
 Il file finale dovrebbe avere un formato simile al seguente:
 ```json
 {
-  "years": [2021],
+  "years": [2022],
   "0": [
-    { "year": "2021", "name": "LEONARDO", "count": "8448", "gender": "m", "percent": "4.1237113402062" },
-    { "year": "2021", "name": "ALESSANDRO", "count": "4975", "gender": "m", "percent": "2.4284403311465" },
-    { "year": "2021", "name": "TOMMASO", "count": "4973", "gender": "m", "percent": "2.427464073727" }
+    { "year": 2022, "name": "LEONARDO", "count": 7888, "gender": "m", "percent": 3.8960782376766 },
+    { "year": 2022, "name": "FRANCESCO", "count": 4823, "gender": "m", "percent": 2.3821989528796 },
+    { "year": 2022, "name": "TOMMASO", "count": 4795, "gender": "m", "percent": 2.3683690605552 }
   ],
   "1": [
-    { "year": "2021", "name": "SOFIA", "count": "5578", "gender": "f", "percent": "2.8642583891756" },
-    { "year": "2021", "name": "AURORA", "count": "4991", "gender": "f", "percent": "2.5628385837891" },
-    { "year": "2021", "name": "GIULIA", "count": "4616", "gender": "f", "percent": "2.3702790829033" }
+    { "year": 2022, "name": "SOFIA", "count": 5465, "gender": "f", "percent": 2.8746212758795 },
+    { "year": 2022, "name": "AURORA", "count": 4900, "gender": "f", "percent": 2.5774280424171 },
+    { "year": 2022, "name": "GIULIA", "count": 4198, "gender": "f", "percent": 2.2081720249116 }
   ]
 }
 ```
@@ -86,16 +86,16 @@ in ordine alfabetico, stampando per ciascun nome il genere ed il numero di
 bambini registrati con quel nome.
 
 ```plaintext
-ALESSANDRO  m  4975
-AURORA  f  4991
-GIULIA  f  4616
-LEONARDO  m  8448
-SOFIA  f  5578
-TOMMASO  m  4973
+AURORA  f  4900
+FRANCESCO  m  4823
+GIULIA  f  4198
+LEONARDO  m  7888
+SOFIA  f  5465
+TOMMASO  m  4795
 ```
 
 
 ## Note legali
 
-Le statistiche sui nomi sono estratte dal sito dell'ISTAT e sono soggette a licenza
-[Creative Commons – Attribuzione – versione 3.0](https://www.istat.it/it/note-legali).
+Le statistiche sui nomi sono estratte dal sito dell'ISTAT e sono soggette a
+[Licenza CC-by Creative Commons 4.0](https://www.istat.it/note-legali/).
