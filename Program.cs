@@ -23,22 +23,13 @@ using (AsyncServiceScope scope = host.Services.CreateAsyncScope())
 
 
 
-class Executor
+class Executor(
+    IHttpDownloader downloader,
+    IJsonpToJsonConverter converter)
 {
-    const string RawUri = "https://www.istat.it/ws/nati/index2021.php?type=list&limit=137&year=2021";
-    const string RawFile = "nascite2021.js";
-    const string JsonFile = "nascite2021.json";
-
-    readonly IHttpDownloader _downloader;
-    readonly IJsonpToJsonConverter _converter;
-
-    public Executor(
-        IHttpDownloader downloader,
-        IJsonpToJsonConverter converter)
-    {
-        _downloader = downloader;
-        _converter = converter;
-    }
+    const string RawUri = "https://www.istat.it/wp-content/themes/EGPbs5-child/contanomi/nati/index2022.php?type=list&limit=200&year=2022";
+    const string RawFile = "nascite2022.js";
+    const string JsonFile = "nascite2022.json";
 
     public async Task PrintSortedNamesAsync(CancellationToken cancellationToken = default)
     {
@@ -46,7 +37,7 @@ class Executor
         if (!File.Exists(RawFile))
         {
             using FileStream file = File.OpenWrite(RawFile);
-            await _downloader.DownloadAsync(RawUri, file, cancellationToken);
+            await downloader.DownloadAsync(RawUri, file, cancellationToken);
         }
 
         // 2. Converte in formato JSON la risposta.
@@ -54,7 +45,7 @@ class Executor
         {
             using FileStream source = File.OpenRead(RawFile);
             using FileStream target = File.OpenWrite(JsonFile);
-            _converter.Convert(source, target);
+            converter.Convert(source, target);
         }
 
         // 3. Deserializza il JSON di risposta.

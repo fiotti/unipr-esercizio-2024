@@ -17,7 +17,7 @@ class JsonpToJsonConverter : IJsonpToJsonConverter
         //               start                   end
         // target: { "Hello": "(World)" }
 
-        List<byte> bytes = new();
+        List<byte> bytes = [];
 
         Span<byte> buff = stackalloc byte[4096];
         int bytesRead;

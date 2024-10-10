@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace Esercizio.Data;
 
-[JsonSerializable(typeof(GenderBirthStats))]
-[JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
 class GenderBirthStats
 {
     [JsonPropertyName("year")]
